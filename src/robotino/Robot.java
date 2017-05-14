@@ -112,7 +112,7 @@ public class Robot {
 
         }
     }
-
+    //Hier in der Methode werden alle Sensoren getestet. Wenn ein Sensor unter 0.409
     public boolean isHindernis() {
         boolean hindernis = false;
         for (Sensor s : sensors) {
