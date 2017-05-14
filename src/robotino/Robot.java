@@ -112,7 +112,7 @@ public class Robot {
 
         }
     }
-
+//fuzfui
     public boolean isHindernis() {
         boolean hindernis = false;
         for (Sensor s : sensors) {
