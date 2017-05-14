@@ -112,14 +112,16 @@ public class Robot {
 
         }
     }
-
-    public boolean isHindernis() {
+    //Hier in der Methode werden alle Sensoren getestet. Wenn ein Sensor ein Hindernis
+    //erkennt, bei dem der Abstand unter 0.409m liegt, wird der Sensor in "detectedSensors"
+    //Variable abgespeichert
+      public boolean isHindernis() {
         boolean hindernis = false;
-        for (Sensor s : sensors) {
-            if (s.getDistance() < 0.409) {
-                detectedSensors.add(s);
-                System.out.println(s.getNumberOfSensor()+" stopped by\t" + s.getDistance());
-                hindernis = true;
+        for (Sensor s : sensors) { //die for-Schleife wird solange durchlaufen, bis alle Sensoren(=grün) die vorhanden sind, getestet sind
+            if (s.getDistance() < 0.409) { //der abgespeicherte Sensor in s, wird auf Abstand geprüft, ob er unter 0.409m liegt, wenn ja
+                detectedSensors.add(s); //erfasster Sensor wird in "detectedSensors" abgespeichert
+                System.out.println(s.getNumberOfSensor()+" stopped by\t" + s.getDistance());//zu wissen bei welchem Sensor und bei welchem Abstand gestoppt wurde
+                hindernis = true; // sofern Hindernis erkannt wurde, wird auf true gesetzt
 
             }
         }

@@ -44,7 +44,7 @@ public class Sensor extends Thread {
         return numberOfSensor;
     }
 
-    public float getDistance() {
+    public float getDistance() {    // der Abstand vom Sensor zum Hindernis
         return distance;
     }
 
