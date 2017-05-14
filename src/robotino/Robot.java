@@ -73,6 +73,7 @@ public class Robot {
         float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f;
+        float b = 0.1f;
         while (_com.isConnected() && !_bumper.value()) {
 
             a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
