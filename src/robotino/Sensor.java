@@ -5,10 +5,7 @@
  */
 package robotino;
 
-/**
- *
- * @author Administrator
- */
+
 public class Sensor {
     
 }
