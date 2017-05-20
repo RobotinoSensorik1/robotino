@@ -9,10 +9,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import rec.robotino.api2.Com;
 
-public class MyCon extends Com{
+public class MyCom extends Com{
     Timer _timer;
     
-    public MyCon(){
+    public MyCom(){
         _timer = new Timer();
         _timer.scheduleAtFixedRate(new OnTimeOut(), 0, 20);
     }

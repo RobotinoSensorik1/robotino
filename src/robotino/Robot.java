@@ -15,11 +15,21 @@ public class Robot {
     protected final Com _com;
     protected final OmniDrive _omniDrive;
     protected final Bumper _bumper;
+    protected final ArrayList<Sensor> sensors;
+    private ArrayList<Sensor> detectedSensors = new ArrayList<Sensor>();
+    private boolean drive = false;
 
     public Robot() {
         _com = new MyCom();
         _omniDrive = new OmniDrive();
         _bumper = new Bumper();
+        sensors = new ArrayList<Sensor>();
+
+        // Sensoren anlegen als eigene Threads und den Thread starten
+        for (int i = 0; i < 9; i++) {
+            sensors.add(new Sensor(i, this._com));
+            sensors.get(i).start();
+        }
 
     }
 
@@ -56,15 +66,47 @@ public class Robot {
     public boolean isConnected() {
         return _com.isConnected();
     }
-    
-    public void drive(){
+
+    public void drive() {
         System.out.println("Driving...");
-        float[] startVector = new float[]{0.0f,  0.1f};
+        float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f; //speed Up
-        
-        while(_com.isConnected() && !_bumper.value()){
-            
+
+        while (_com.isConnected() && !_bumper.value()) {
+
         }
+    }
+
+    //Hier in der Methode werden alle Sensoren getestet. Wenn ein Sensor unter 0.409
+    public boolean isHindernis() {
+        boolean hindernis = false;
+        for (Sensor s : sensors) {
+            if (s.getDistance() < 0.409) {
+                detectedSensors.add(s);
+
+                System.out.println(s.getNumberOfSensor() + " stopped by\t" + s.getDistance());
+
+                hindernis = true;
+
+            }
+        }
+
+        return hindernis;
+    }
+
+    private Sensor getNearestSensor() {
+        if (detectedSensors != null) {
+            Sensor min = detectedSensors.get(0);
+            if (detectedSensors.size() > 1) {
+                for (Sensor s : detectedSensors) {
+                    if (s.getDistance() < min.getDistance()) {
+                        min = s;
+                    }
+                }
+            }
+            return min;
+        }
+        return null;
     }
 }
