@@ -68,12 +68,54 @@ public class Robot {
         _com.disconnectFromServer();
     }
 
+<<<<<<< OURS
+    public boolean isConnected() {
+        return _com.isConnected();
+    }
+
+=======
+>>>>>>> THEIRS
     public void drive() throws InterruptedException {
         System.out.println("Driving...");
         float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f;
+<<<<<<< OURS
+        float b = 0.1f;
+=======
+>>>>>>> THEIRS
         while (_com.isConnected() && !_bumper.value()) {
+<<<<<<< OURS
+            a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
+            command.driveForward(dir, dir, a);
+            _omniDrive.setVelocity(dir[0], dir[1], 0);
+            while (isHindernis()) {
+                
+                if(detectedSensors.size() == 1){
+                    //rotate in place
+                    //get angle to rotate
+                    float deg = command.getAngleToRotate(detectedSensors.get(0));
+                    float w = command.getAngularSpeed(deg);
+                    a = command.speedUpOfSpeedUp(0.0005f, 0.1f);
+                    command.rotateInPlace(dir, w);
+                    _omniDrive.setVelocity(a * 0.0f, a * 0.0f, w);
+                    Thread.sleep(100);
+                    //geradeausfahren
+                    a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
+                    command.driveForward(dir, dir, a);
+                    _omniDrive.setVelocity(dir[0], dir[1], 0);
+                    detectedSensors.clear();
+                    break;
+                }
+                else if (detectedSensors.size() == 2) {
+                    //check for free side
+                    float deg = command.getAngleToRotate(detectedSensors, 2);
+                } else if(detectedSensors.size() > 2){
+                    float deg = command.getAngleToRotate(detectedSensors, detectedSensors.size());
+                }
+            }
+            Thread.sleep(100);
+=======
 
             a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
             command.driveForward(dir, dir, a);
@@ -110,6 +152,7 @@ public class Robot {
 
             Thread.sleep(100);
 
+>>>>>>> THEIRS
         }
     }
 //fuzfui
