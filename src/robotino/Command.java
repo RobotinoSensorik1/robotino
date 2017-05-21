@@ -4,18 +4,11 @@
  * and open the template in the editor.
  */
 package robotino;
-<<<<<<< OURS
-=======
 
->>>>>>> THEIRS
 import java.util.ArrayList;
 
-/**
- *
- * @author Saskia
- */
 public class Command {
-<<<<<<< OURS
+
     // Calculations
     public float getAngleToRotate(Sensor s) {
         float deg = 0;
@@ -97,7 +90,6 @@ public class Command {
         v[1] = (float) Math.sin(rad) * tmp + (float) Math.cos(rad) * v[1];
     }
 }
-=======
 
     // Calculations
     public float getAngleToRotate(Sensor s) {
@@ -246,4 +238,4 @@ public class Command {
     }
 
 }
->>>>>>> THEIRS
+

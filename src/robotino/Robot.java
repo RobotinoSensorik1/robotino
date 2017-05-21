@@ -15,7 +15,6 @@ public class Robot {
     protected final Com _com;
     protected final OmniDrive _omniDrive;
     protected final Bumper _bumper;
-    protected Command command = new Command();
     protected final ArrayList<Sensor> sensors;
     private ArrayList<Sensor> detectedSensors = new ArrayList<Sensor>();
     private boolean drive = false;
@@ -31,6 +30,7 @@ public class Robot {
             sensors.add(new Sensor(i, this._com));
             sensors.get(i).start();
         }
+
     }
 
     public static void main(String[] args) {
@@ -49,13 +49,7 @@ public class Robot {
             robotino.disconnect();
             System.exit(0);
         } catch (Exception e) {
-            System.out.println(e.toString());
         }
-
-    }
-
-    public boolean isConnected() {
-        return _com.isConnected();
     }
 
     public void connect(String hostname, boolean block) {
@@ -66,26 +60,20 @@ public class Robot {
 
     public void disconnect() {
         _com.disconnectFromServer();
+        System.out.println("Disconnecting...");
     }
 
-<<<<<<< OURS
     public boolean isConnected() {
         return _com.isConnected();
     }
 
-=======
->>>>>>> THEIRS
     public void drive() throws InterruptedException {
         System.out.println("Driving...");
         float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f;
-<<<<<<< OURS
-        float b = 0.1f;
-=======
->>>>>>> THEIRS
         while (_com.isConnected() && !_bumper.value()) {
-<<<<<<< OURS
+          
             a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
             command.driveForward(dir, dir, a);
             _omniDrive.setVelocity(dir[0], dir[1], 0);
@@ -115,53 +103,26 @@ public class Robot {
                 }
             }
             Thread.sleep(100);
-=======
 
-            a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
-            command.driveForward(dir, dir, a);
-            _omniDrive.setVelocity(dir[0], dir[1], 0);
-            while (isHindernis()) {
+    public void drive() {
+        System.out.println("Driving...");
+        float[] startVector = new float[]{0.0f, 0.1f};
+        float[] dir = new float[2];
+        float a = 0.0f; //speed Up
 
-                
-                if(detectedSensors.size() == 1){
-                    //rotate in place
-                    //get angle to rotate
-                    float deg = command.getAngleToRotate(detectedSensors.get(0));
-                    float w = command.getAngularSpeed(deg);
-                    a = command.speedUpOfSpeedUp(0.0005f, 0.1f);
-                    command.rotateInPlace(dir, w);
-                    _omniDrive.setVelocity(a * 0.0f, a * 0.0f, w);
-                    Thread.sleep(100);
+        while (_com.isConnected() && !_bumper.value()) {
 
-                    //geradeausfahren
-                    a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
-                    command.driveForward(dir, dir, a);
-                    _omniDrive.setVelocity(dir[0], dir[1], 0);
-                    detectedSensors.clear();
-                    break;
-                }
-                else if (detectedSensors.size() == 2) {
-                    //check for free side
-                    float deg = command.getAngleToRotate(detectedSensors, 2);
-
-                } else if(detectedSensors.size() > 2){
-                    float deg = command.getAngleToRotate(detectedSensors, detectedSensors.size());
-                }
-
-            }
-
-            Thread.sleep(100);
-
->>>>>>> THEIRS
         }
     }
-//fuzfui
+
     public boolean isHindernis() {
         boolean hindernis = false;
         for (Sensor s : sensors) {
             if (s.getDistance() < 0.409) {
                 detectedSensors.add(s);
-                System.out.println(s.getNumberOfSensor()+" stopped by\t" + s.getDistance());
+
+                System.out.println(s.getNumberOfSensor() + " stopped by\t" + s.getDistance());
+
                 hindernis = true;
 
             }
@@ -184,5 +145,4 @@ public class Robot {
         }
         return null;
     }
-
 }

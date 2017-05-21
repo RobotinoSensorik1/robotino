@@ -8,12 +8,8 @@ package robotino;
 import rec.robotino.api2.Com;
 import rec.robotino.api2.DistanceSensor;
 
-/**
- *
- * @author Saskia
- */
-public class Sensor extends Thread {
 
+public class Sensor extends Thread{
     private final long numberOfSensor;
     private final Com _com;
     private final DistanceSensor _distanceSensor;
@@ -47,5 +43,4 @@ public class Sensor extends Thread {
     public float getDistance() {
         return distance;
     }
-
 }
