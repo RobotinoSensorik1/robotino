@@ -15,6 +15,7 @@ public class Robot {
     protected final Com _com;
     protected final OmniDrive _omniDrive;
     protected final Bumper _bumper;
+    private Command command;
     protected final ArrayList<Sensor> sensors;
     private ArrayList<Sensor> detectedSensors = new ArrayList<Sensor>();
     private boolean drive = false;
@@ -23,6 +24,7 @@ public class Robot {
         _com = new MyCom();
         _omniDrive = new OmniDrive();
         _bumper = new Bumper();
+        command = new Command();
         sensors = new ArrayList<Sensor>();
 
         // Sensoren anlegen als eigene Threads und den Thread starten
@@ -72,49 +74,43 @@ public class Robot {
         float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f;
+        float deg = 0.0f;
+        int counter = 0;
         while (_com.isConnected() && !_bumper.value()) {
           
-            a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
-            command.driveForward(dir, dir, a);
-            _omniDrive.setVelocity(dir[0], dir[1], 0);
             while (isHindernis()) {
                 
                 if(detectedSensors.size() == 1){
                     //rotate in place
                     //get angle to rotate
-                    float deg = command.getAngleToRotate(detectedSensors.get(0));
-                    float w = command.getAngularSpeed(deg);
-                    a = command.speedUpOfSpeedUp(0.0005f, 0.1f);
+                    deg = command.getAngleToRotate(detectedSensors.get(0));
+                    
+                }
+                else if (detectedSensors.size() == 2) {
+                    //check for free side
+                    deg = command.getAngleToRotate(detectedSensors, 2);
+                } else if(detectedSensors.size() > 2){
+                    deg = command.getAngleToRotate(detectedSensors, detectedSensors.size());
+                }
+                float w = command.getAngularSpeed(deg);
+                    a = command.speedUpOfSpeedUp(0.00f, 0.1f);
                     command.rotateInPlace(dir, w);
                     _omniDrive.setVelocity(a * 0.0f, a * 0.0f, w);
-                    Thread.sleep(100);
+                    Thread.sleep(275);
                     //geradeausfahren
-                    a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
+                    a = command.speedUpOfSpeedUp(0.0000005f, 0.1f);
                     command.driveForward(dir, dir, a);
                     _omniDrive.setVelocity(dir[0], dir[1], 0);
                     detectedSensors.clear();
                     break;
-                }
-                else if (detectedSensors.size() == 2) {
-                    //check for free side
-                    float deg = command.getAngleToRotate(detectedSensors, 2);
-                } else if(detectedSensors.size() > 2){
-                    float deg = command.getAngleToRotate(detectedSensors, detectedSensors.size());
-                }
             }
+            a = command.speedUpOfSpeedUp(0.00005f, 0.1f);
+            command.driveForward(dir, dir, a);
+            _omniDrive.setVelocity(dir[0], dir[1], 0);
             Thread.sleep(100);
-
-    public void drive() {
-        System.out.println("Driving...");
-        float[] startVector = new float[]{0.0f, 0.1f};
-        float[] dir = new float[2];
-        float a = 0.0f; //speed Up
-
-        while (_com.isConnected() && !_bumper.value()) {
-
         }
     }
-
+    
     public boolean isHindernis() {
         boolean hindernis = false;
         for (Sensor s : sensors) {
