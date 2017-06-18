@@ -7,8 +7,8 @@ package robotino;
 
 import java.util.ArrayList;
 
-public class Command {
-
+public class Command {   
+    
    // Calculations
     public float getAngleToRotate(Sensor s) {
         float deg = 0;
@@ -19,30 +19,80 @@ public class Command {
         else if (s.getNumberOfSensor() > 6) {
             deg = ((9 - s.getNumberOfSensor()) * 40);
         }
+        if(s.getNumberOfSensor() == 0) {
+            deg = 75.0f;
+        }
+        
         return deg;
     }
     public float getAngleToRotate(ArrayList<Sensor> sensors, int numberOfDetectedSensors) {
         //check, if more than 2 sensors are detected
-        if (sensors.size() > 2) {
-        } else {
-            //check, if sensors are next to each other
-            int differenz = (int) (sensors.get(0).getNumberOfSensor() - sensors.get(1).getNumberOfSensor());
-            if (differenz == 1 || differenz == -1) {
-                double a = sensors.get(0).getDistance();
-                double b = sensors.get(1).getDistance();
-                double gamma = 40.0;
-                double c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(gamma));
-                
-                //c = a * sin(γ) / sin(90)
-                
-            } else if (differenz == 2 || differenz == -2) {
-                return 40f*3;
-            } else if (differenz > 2 || differenz < -2) {
-                return 180f;
-            }
-        }
-
-        return 50f;
+        boolean left = false;
+        double a = 0.0;
+        double b = 0.0;
+        double c = 0.0;
+        double alpha = 0.0;
+        int beta = 0;
+        double beta2;
+        double gamma = 0.0;
+        
+       if (sensors.size() > 2) {
+            
+           if(isSensor0(sensors)) {
+               return 180.0f;
+           }
+           
+           if(checkFrontSensor(sensors.get(0)) && checkFrontSensor(sensors.get(1)) && checkFrontSensor(sensors.get(2))){
+               return 180.0f;
+           }
+           
+           if(sensors.get(0).getNumberOfSensor() < 4){
+               return -90.0f;
+           }else{
+               return 90.0f;
+           }
+             
+              } else {
+           //check, if sensors are next to each other
+           int differenz = (int) (sensors.get(0).getNumberOfSensor() - sensors.get(1).getNumberOfSensor());
+           if(differenz < -1) {
+               gamma = 40.0;
+               if(sensors.get(0).getNumberOfSensor() < 5) {
+                   if(sensors.get(0).getNumberOfSensor() == 0 && sensors.get(1).getNumberOfSensor() == 8){
+                       return -110.0f;
+                   }else if(sensors.get(0).getNumberOfSensor() == 0 && sensors.get(1).getNumberOfSensor() == 1){
+                       return 110.0f;
+                   }
+                   
+                   //linke Seite (Drehwinkel muss - sein)
+                   a = sensors.get(0).getDistance();
+                   b = sensors.get(1).getDistance();
+                   left = true;
+               } else{
+                   //rechte Seite (Drehwinkel muss + sein)
+                   a = sensors.get(1).getDistance();
+                   b = sensors.get(0).getDistance();
+           }
+               c = Math.sqrt(a * a + b * b -2 * a * b * Math.cos(gamma));
+               beta = (int) Math.acos((b * b - c * c -a + a) / (-2 * c * a));
+               double gamma2 = 180.0 - beta;
+             
+               if(beta == 90) {
+                   beta2 = (90.0 - gamma2);
+               } else {
+                   beta2 = (90.0 - (90.0 - gamma2));
+               }
+              
+               if(left) {
+                   return(float) -beta2;
+               }else{
+                   return(float) beta2; 
+               }
+           } else {
+               return 40.0f;
+           }
+       }
+               
     }
    
   
