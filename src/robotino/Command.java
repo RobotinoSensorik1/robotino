@@ -92,8 +92,32 @@ public class Command {
                return 40.0f;
            }
        }
-               
     }
+        private boolean checkFrontSensor(Sensor s){
+        boolean isFront = false;
+        if(s.getNumberOfSensor() == 0){
+            isFront = true;
+        }else if(s.getNumberOfSensor() == 1){
+            isFront = true;
+        }else if(s.getNumberOfSensor() == 8){
+            isFront = true;
+        }
+        
+        return isFront;
+    }
+    
+    private boolean isSensor0(ArrayList<Sensor> sensors){
+        boolean is0 = false;
+        
+        for(Sensor s: sensors){
+            if(s.getNumberOfSensor()==0){
+            is0 = true;
+            }
+        }
+        return is0;
+       }
+               
+    
    
   
     public float speedUpOfSpeedUp(float v, float t) {
