@@ -39,14 +39,14 @@ public class Command {
        if (sensors.size() > 2) {
             
            if(isSensor0(sensors)) {
-               return 180.0f;
+               return 225.0f;
            }
            
            if(checkFrontSensor(sensors.get(0)) && checkFrontSensor(sensors.get(1)) && checkFrontSensor(sensors.get(2))){
                return 180.0f;
            }
            
-           if(sensors.get(0).getNumberOfSensor() < 4){
+           if(sensors.get(1).getNumberOfSensor() < 4){
                return -90.0f;
            }else{
                return 90.0f;
@@ -57,7 +57,7 @@ public class Command {
            int differenz = (int) (sensors.get(0).getNumberOfSensor() - sensors.get(1).getNumberOfSensor());
            if(differenz < -1) {
                gamma = 40.0;
-               if(sensors.get(0).getNumberOfSensor() < 5) {
+               if(sensors.get(1).getNumberOfSensor() < 4) {
                    if(sensors.get(0).getNumberOfSensor() == 0 && sensors.get(1).getNumberOfSensor() == 8){
                        return -110.0f;
                    }else if(sensors.get(0).getNumberOfSensor() == 0 && sensors.get(1).getNumberOfSensor() == 1){
@@ -68,7 +68,7 @@ public class Command {
                    a = sensors.get(0).getDistance();
                    b = sensors.get(1).getDistance();
                    left = true;
-               } else{
+               } else if(sensors.get(0).getNumberOfSensor() > 6) {
                    //rechte Seite (Drehwinkel muss + sein)
                    a = sensors.get(1).getDistance();
                    b = sensors.get(0).getDistance();
@@ -84,9 +84,9 @@ public class Command {
                }
               
                if(left) {
-                   return(float) -beta2;
+                   return(float) beta2;
                }else{
-                   return(float) beta2; 
+                   return(float) -beta2; 
                }
            } else {
                return 40.0f;
@@ -164,6 +164,3 @@ public class Command {
         v[1] = (float) Math.sin(rad) * tmp + (float) Math.cos(rad) * v[1];
     }
 }
-
-
-
