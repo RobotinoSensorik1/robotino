@@ -74,8 +74,7 @@ public class Robot {
         float[] startVector = new float[]{0.0f, 0.1f};
         float[] dir = new float[2];
         float a = 0.0f;
-        float deg = 0.0f;
-        int counter = 0;
+        float deg = 0.0f;                
         while (_com.isConnected() && !_bumper.value()) {
           
             while (isHindernis()) {
